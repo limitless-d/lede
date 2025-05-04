@@ -9,7 +9,7 @@ name: OpenWrt-CI
 
 on:
   schedule:
-    - cron: 0 20 * * *
+    - cron: 0 20 * * 2
   push:
       branches:
         - master
@@ -66,7 +66,13 @@ jobs:
           ./scripts/feeds install -a
 
       - name: Generate configuration file
-        run: make defconfig
+        run: |
+          
+          cat >> .config <<EOF
+          CONFIG_PACKAGE_luci-theme-neobird=y
+          EOF
+          
+          make defconfig
 
       - name: Download packages
         run: make download -j16
