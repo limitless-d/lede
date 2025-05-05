@@ -81,7 +81,25 @@ jobs:
           # EOF
           
           cat >> .config <<EOF
-          CONFIG_PACKAGE_luci-theme-neobird=y
+          CONFIG_PACKAGE_iwlwifi-firmware-ax210=y
+          EOF
+          
+          cat >> .config <<EOF
+          CONFIG_PACKAGE_kmod-iwlwifi=y
+          CONFIG_PACKAGE_kmod-mac80211=y
+          CONFIG_PACKAGE_MAC80211_DEBUGFS=y
+          CONFIG_PACKAGE_MAC80211_MESH=y
+          EOF
+
+          cat >> .config << EOF
+          CONFIG_PACKAGE_luci-app-openclash=y
+          EOF
+
+          cat >> .config << EOF
+          CONFIG_PACKAGE_luci-theme-argon=m
+          CONFIG_PACKAGE_luci-theme-bootstrap=y
+          CONFIG_PACKAGE_luci-theme-design=m
+          CONFIG_PACKAGE_luci-theme-material=m
           EOF
           
           sed -i 's/^[ \t]*//g' ./.config
