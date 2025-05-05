@@ -10,9 +10,9 @@ name: OpenWrt-CI
 on:
   schedule:
     - cron: 0 20 * * 2
-  # push:
-  #     branches:
-  #       - master
+  push:
+      branches:
+        - master
 
 permissions:
   contents: read
@@ -79,6 +79,11 @@ jobs:
           # CONFIG_KERNEL_BUILD_USER="OpenWrt-CI"
           # CONFIG_KERNEL_BUILD_DOMAIN="Azure"
           # EOF
+          
+          cat >> .config << EOF
+          CONFIG_PACKAGE_hostapd=y
+          CONFIG_PACKAGE_hostapd-common=y
+          EOF
           
           cat >> .config <<EOF
           CONFIG_PACKAGE_iwlwifi-firmware-ax210=y
