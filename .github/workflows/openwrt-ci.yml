@@ -9,7 +9,7 @@ name: OpenWrt-CI
 
 on:
   schedule:
-    - cron: 0 20 * * 2
+    - cron: 0 20 * * *
   push:
       branches:
         - master
@@ -79,12 +79,7 @@ jobs:
           # CONFIG_KERNEL_BUILD_USER="OpenWrt-CI"
           # CONFIG_KERNEL_BUILD_DOMAIN="Azure"
           # EOF
-          
-          cat >> .config << EOF
-          CONFIG_PACKAGE_hostapd=y
-          CONFIG_PACKAGE_hostapd-common=y
-          EOF
-          
+
           cat >> .config <<EOF
           CONFIG_PACKAGE_iwlwifi-firmware-ax210=y
           EOF
@@ -101,10 +96,14 @@ jobs:
           EOF
 
           cat >> .config << EOF
-          CONFIG_PACKAGE_luci-theme-argon=m
+          CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_luci-theme-bootstrap=y
-          CONFIG_PACKAGE_luci-theme-design=m
-          CONFIG_PACKAGE_luci-theme-material=m
+          CONFIG_PACKAGE_luci-theme-material=y
+          EOF
+          
+          cat >> .config << EOF
+          CONFIG_PACKAGE_hostapd=y
+          CONFIG_PACKAGE_hostapd-common=y
           EOF
           
           sed -i 's/^[ \t]*//g' ./.config
