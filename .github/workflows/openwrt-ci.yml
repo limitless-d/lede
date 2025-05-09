@@ -10,9 +10,9 @@ name: OpenWrt-CI
 on:
   schedule:
     - cron: 0 20 * * *
-  # push:
-  #     branches:
-  #       - master
+  push:
+      branches:
+        - master
 
 permissions:
   contents: read
@@ -61,7 +61,7 @@ jobs:
 
       - name: Update feeds
         run: |
-          # sed -i 's/#src-git helloworld/src-git helloworld/g' ./feeds.conf.default
+          sed -i 's/#src-git helloworld/src-git helloworld/g' ./feeds.conf.default
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -81,18 +81,39 @@ jobs:
           # EOF
 
           cat >> .config <<EOF
+          CONFIG_PACKAGE_iwlwifi-firmware-ax201=y
           CONFIG_PACKAGE_iwlwifi-firmware-ax210=y
+          CONFIG_PACKAGE_iwlwifi-firmware-ax411=y
           EOF
           
           cat >> .config <<EOF
+          CONFIG_PACKAGE_kmod-cfg80211=y
           CONFIG_PACKAGE_kmod-iwlwifi=y
           CONFIG_PACKAGE_kmod-mac80211=y
           CONFIG_PACKAGE_MAC80211_DEBUGFS=y
           CONFIG_PACKAGE_MAC80211_MESH=y
+          CONFIG_PACKAGE_kmod-mac80211-hwsim=y
           EOF
 
           cat >> .config << EOF
           CONFIG_PACKAGE_luci-app-openclash=y
+          CONFIG_PACKAGE_luci-app-passwall=y
+          EOF
+
+          cat >> .config << EOF
+          CONFIG_PACKAGE_luci-app-passwall_Iptables_Transparent_Proxy=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Geoview=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Haproxy=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Hysteria=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Client=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Server=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Client=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Simple_Obfs=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_SingBox=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan_Plus=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray_Plugin=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Xray=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Xray_Plugin=y
           EOF
 
           cat >> .config << EOF
